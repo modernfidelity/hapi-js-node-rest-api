@@ -1,0 +1,26 @@
+{
+  "name": "node-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.2.9",
+    "blipp": "^2.3.0",
+    "cassandra-driver": "^2.2.1",
+    "good": "^6.4.0",
+    "hapi": "^10.4.1",
+    "hapi-auth-jwt2": "^5.1.0",
+    "hapi-paginate": "^0.3.0",
+    "hapi-router": "^3.4.0",
+    "hapi-swagger": "^2.1.0",
+    "hapi-swaggered-ui": "^2.1.0",
+    "mysql": "^2.9.0",
+    "pm2": "^0.15.7",
+    "sequelize": "^3.11.0"
+  }
+}
