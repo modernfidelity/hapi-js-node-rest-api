@@ -6,22 +6,22 @@
  * @param reply
  */
 
+
+// Include the mysql connection
 var db = require('../../datastores/mysql.js');
 
+
+/**
+ *
+ * Find
+ *
+ * @param request
+ * @param reply
+ */
 exports.find = function (request, reply) {
 
     var sql = 'SELECT * FROM bookmarks';
     var params = [];
-
-
-    //db.all(sql, params, function (err, results) {
-    //
-    //    if (err) {
-    //        throw err;
-    //    }
-    //
-    //    reply(results);
-    //});
 
 
     db.con.query('SELECT * FROM bookmarks', function (err, results) {
@@ -36,43 +36,114 @@ exports.find = function (request, reply) {
 
 };
 
+
+/**
+ *
+ * Find single item
+ *
+ * @param request
+ * @param reply
+ */
 exports.findOne = function (request, reply) {
 
-    this.db.get('SELECT * FROM recipes WHERE id = ?', [request.params.id], function (err, result) {
 
-        if (err) {
-            throw err;
-        }
+    db.con.query('SELECT * FROM bookmarks WHERE id = ?', [request.params.id], function (err, result) {
+        if (err) throw err;
 
-        if (typeof result !== 'undefined') {
-            reply(result);
-        } else {
-            reply('Not found').code(404);
-        }
+        console.log('Data received from Db:\n');
+
+        reply(result);
+
     });
+
+
 };
 
+
+/**
+ *
+ * Find bookmarks by user
+ *
+ * @param request
+ * @param reply
+ */
+exports.findByUser = function (request, reply) {
+
+
+    db.con.query('SELECT * FROM bookmarks WHERE uid = ?', [request.params.uid], function (err, results) {
+        if (err) throw err;
+
+        console.log('Data received from Db:\n');
+
+        reply(results);
+
+    });
+
+
+};
+
+
+/**
+ *
+ * Create a single item
+ *
+ * @param request
+ * @param reply
+ */
 exports.create = function (request, reply) {
 
-    var sql = 'INSERT INTO recipes (name, cooking_time, prep_time, serves, cuisine, ingredients, directions, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 
-    this.db.run(sql,
-        [
-            request.payload.name,
-            request.payload.cooking_time,
-            request.payload.prep_time,
-            request.payload.serves,
-            request.payload.cuisine,
-            request.payload.ingredients,
-            request.payload.directions,
-            request.auth.credentials.id,
-        ],
-        function (err) {
+    db.con.query('INSERT INTO bookmarks (uid, url, title) VALUES (?, ?, ?)', [
 
-            if (err) {
-                throw err;
-            }
+        request.payload.uid,
+        request.payload.url,
+        request.payload.title
 
-            reply({status: 'ok'});
-        });
+
+    ], function (err, results) {
+
+        if (err) throw err;
+
+        console.log('Data saved to db:\n');
+
+        reply({status: 'ok'});
+
+    });
+
+
 };
+
+
+
+/**
+ *
+ * Delete a single item
+ *
+ * @param request
+ * @param reply
+ */
+exports.delete = function (request, reply) {
+
+
+    db.con.query('DELETE from bookmarks WHERE (id) VALUES (?, ?, ?)', [
+
+        request.payload.uid,
+        request.payload.url,
+        request.payload.title
+
+
+    ], function (err, results) {
+
+        if (err) throw err;
+
+        console.log('Data saved to db:\n');
+
+        reply({status: 'ok'});
+
+    });
+
+
+};
+
+
+
